@@ -1,0 +1,13 @@
+syntax = "proto3";
+package lavalottery.lavalottery;
+
+option go_package = "lavalottery/x/lavalottery/types";
+
+message Ticket {
+  string index = 1; 
+  string name = 2; 
+  string fee = 3; 
+  string bet = 4; 
+  
+}
+

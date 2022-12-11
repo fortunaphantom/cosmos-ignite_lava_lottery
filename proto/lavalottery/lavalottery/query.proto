@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "lavalottery/lavalottery/params.proto";
+import "lavalottery/lavalottery/ticket.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "lavalottery/x/lavalottery/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/lavalottery/lavalottery/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Ticket by index.
+	rpc Ticket(QueryGetTicketRequest) returns (QueryGetTicketResponse) {
+		option (google.api.http).get = "/lavalottery/lavalottery/ticket/{index}";
+	}
+
+	// Queries a list of Ticket items.
+	rpc TicketAll(QueryAllTicketRequest) returns (QueryAllTicketResponse) {
+		option (google.api.http).get = "/lavalottery/lavalottery/ticket";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTicketRequest {
+	  string index = 1;
+
+}
+
+message QueryGetTicketResponse {
+	Ticket ticket = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTicketRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTicketResponse {
+	repeated Ticket ticket = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
