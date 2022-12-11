@@ -10,8 +10,15 @@ import (
 func (k msgServer) SendTicket(goCtx context.Context, msg *types.MsgSendTicket) (*types.MsgSendTicketResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+    // Create an updated ticket record
+    newTicket := types.Ticket{
+        Index: msg.Creator,
+        Name:  msg.Creator,
+        Fee: msg.Fee,
+        Bet: msg.Bet,
+    }
 
-	return &types.MsgSendTicketResponse{}, nil
+	// Write ticket information to the store
+    k.SetTicket(ctx, newTicket)
+    return &types.MsgSendTicketResponse{}, nil
 }
