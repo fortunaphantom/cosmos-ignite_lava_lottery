@@ -1,11 +1,47 @@
 version: 1
 accounts:
-  - name: alice
-    coins: ["20000token", "200000000stake"]
-  - name: bob
-    coins: ["10000token", "100000000stake"]
+  - name: client1
+    coins: ["500token", "100000000stake"]
+  - name: client2
+    coins: ["500token", "100000000stake"]
+  - name: client3
+    coins: ["500token"]
+  - name: client4
+    coins: ["500token"]
+  - name: client5
+    coins: ["500token"]
+  - name: client6
+    coins: ["500token"]
+  - name: client7
+    coins: ["500token"]
+  - name: client8
+    coins: ["500token"]
+  - name: client9
+    coins: ["500token"]
+  - name: client10
+    coins: ["500token"]
+  - name: client11
+    coins: ["500token"]
+  - name: client12
+    coins: ["500token"]
+  - name: client13
+    coins: ["500token"]
+  - name: client14
+    coins: ["500token"]
+  - name: client15
+    coins: ["500token"]
+  - name: client16
+    coins: ["500token"]
+  - name: client17
+    coins: ["500token"]
+  - name: client18
+    coins: ["500token"]
+  - name: client19
+    coins: ["500token"]
+  - name: client20
+    coins: ["500token"]
 validators:
-  - name: alice
+  - name: client1
     bonded: "100000000stake"
 client:
   openapi:
@@ -15,5 +51,5 @@ client:
   vuex:
     path: "vue/src/store"
 faucet:
-  name: bob
+  name: client2
   coins: ["5token", "100000stake"]
