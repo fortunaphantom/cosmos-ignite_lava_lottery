@@ -1,9 +1,10 @@
 import { Client, registry, MissingWalletError } from 'lavalottery-client-ts'
 
 import { Params } from "lavalottery-client-ts/lavalottery.lavalottery/types"
+import { Ticket } from "lavalottery-client-ts/lavalottery.lavalottery/types"
 
 
-export { Params };
+export { Params, Ticket };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -35,9 +36,12 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
+				Ticket: {},
+				TicketAll: {},
 				
 				_Structure: {
 						Params: getStructure(Params.fromPartial({})),
+						Ticket: getStructure(Ticket.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -71,6 +75,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
+		},
+				getTicket: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Ticket[JSON.stringify(params)] ?? {}
+		},
+				getTicketAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.TicketAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -129,6 +145,80 @@ export default {
 		
 		
 		
+		
+		 		
+		
+		
+		async QueryTicket({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.LavalotteryLavalottery.query.queryTicket( key.index)).data
+				
+					
+				commit('QUERY', { query: 'Ticket', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryTicket', payload: { options: { all }, params: {...key},query }})
+				return getters['getTicket']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryTicket API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryTicketAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.LavalotteryLavalottery.query.queryTicketAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.LavalotteryLavalottery.query.queryTicketAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'TicketAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryTicketAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getTicketAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryTicketAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		async sendMsgSendTicket({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.LavalotteryLavalottery.tx.sendMsgSendTicket({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendTicket:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendTicket:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
+		async MsgSendTicket({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.LavalotteryLavalottery.tx.msgSendTicket({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendTicket:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSendTicket:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		
 	}
 }

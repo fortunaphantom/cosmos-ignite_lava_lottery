@@ -7,10 +7,21 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgSendTicket } from "./types/lavalottery/lavalottery/tx";
 
 
-export {  };
+export { MsgSendTicket };
 
+type sendMsgSendTicketParams = {
+  value: MsgSendTicket,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgSendTicketParams = {
+  value: MsgSendTicket,
+};
 
 
 export const registry = new Registry(msgTypes);
@@ -30,6 +41,28 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgSendTicket({ value, fee, memo }: sendMsgSendTicketParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSendTicket: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSendTicket({ value: MsgSendTicket.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSendTicket: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgSendTicket({ value }: msgSendTicketParams): EncodeObject {
+			try {
+				return { typeUrl: "/lavalottery.lavalottery.MsgSendTicket", value: MsgSendTicket.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSendTicket: Could not create message: ' + e.message)
+			}
+		},
 		
 	}
 };
