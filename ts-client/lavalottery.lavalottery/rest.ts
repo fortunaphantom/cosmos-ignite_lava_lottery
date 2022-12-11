@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type LavalotteryMsgSendTicketResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
