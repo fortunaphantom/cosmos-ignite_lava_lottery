@@ -44682,10 +44682,10 @@ paths:
           format: uint64
       tags:
         - Query
-  /lavalottery/nameservice/params:
+  /lavalottery/lavalottery/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: LavalotteryNameserviceParams
+      operationId: LavalotteryLavalotteryParams
       responses:
         '200':
           description: A successful response.
@@ -74271,10 +74271,10 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  lavalottery.nameservice.Params:
+  lavalottery.lavalottery.Params:
     type: object
     description: Params defines the parameters for the module.
-  lavalottery.nameservice.QueryParamsResponse:
+  lavalottery.lavalottery.QueryParamsResponse:
     type: object
     properties:
       params:

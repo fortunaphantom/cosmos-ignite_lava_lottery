@@ -1,10 +1,10 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
-import LavalotteryNameservice from './lavalottery.nameservice'
+import LavalotteryLavalottery from './lavalottery.lavalottery'
 
 
 export default { 
-  LavalotteryNameservice: load(LavalotteryNameservice, 'lavalottery.nameservice'),
+  LavalotteryLavalottery: load(LavalotteryLavalottery, 'lavalottery.lavalottery'),
   
 }
 
