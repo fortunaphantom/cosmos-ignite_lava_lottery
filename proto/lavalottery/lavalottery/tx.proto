@@ -7,7 +7,17 @@ option go_package = "lavalottery/x/lavalottery/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc SendTicket(MsgSendTicket) returns (MsgSendTicketResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSendTicket {
+  string creator = 1;
+  string fee = 2;
+  string bet = 3;
+}
+
+message MsgSendTicketResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
