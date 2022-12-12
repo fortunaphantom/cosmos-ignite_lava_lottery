@@ -33,9 +33,18 @@ func (k msgServer) SendTicket(goCtx context.Context, msg *types.MsgSendTicket) (
 		return nil, err
 	}
 
+	count := k.GetTicketCount(ctx)
+
+	// Try getting a name from the store
+    ticket, isFound := k.GetTicket(ctx, msg.Creator)
+	if !isFound {
+		count := count + 1
+		k.SetTicketCount(ctx, count)
+	}
+
     // Create an updated ticket record
     newTicket := types.Ticket{
-        Index: msg.Creator,
+        Index: ticket.Index,
         Name:  msg.Creator,
         Fee: msg.Fee,
         Bet: msg.Bet,
@@ -43,5 +52,6 @@ func (k msgServer) SendTicket(goCtx context.Context, msg *types.MsgSendTicket) (
 
 	// Write ticket information to the store
     k.SetTicket(ctx, newTicket)
+
     return &types.MsgSendTicketResponse{}, nil
 }
