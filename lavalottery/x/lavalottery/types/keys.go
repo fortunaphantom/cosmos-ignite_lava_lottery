@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_lavalottery"
+
+	// TicketCountKey
+	TicketCountKey = "TicketCountKey"
 )
 
 func KeyPrefix(p string) []byte {

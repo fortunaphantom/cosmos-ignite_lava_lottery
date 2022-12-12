@@ -1,9 +1,9 @@
 version: 1
 accounts:
   - name: client1
-    coins: ["500token", "100000000stake"]
+    coins: ["500token", "10000000000stake"]
   - name: client2
-    coins: ["500token", "100000000stake"]
+    coins: ["500token", "10000000000stake"]
   - name: client3
     coins: ["500token"]
   - name: client4
